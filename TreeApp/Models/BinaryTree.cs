@@ -47,7 +47,12 @@ public class BinaryTree
         if (current.Left != null)
         {
             temp += node.Value+" --> "+node.Left.Value+" \n";
-            temp += ToMermaid(current.Left)
+            temp += ToMermaid(current.Left);
+        }
+         if (current.Right != null)
+        {
+            temp += node.Value+" --> "+node.Right.Value+" \n";
+            temp += ToMermaid(current.Right);
         }
     }
 }
