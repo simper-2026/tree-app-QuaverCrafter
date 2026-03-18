@@ -15,6 +15,7 @@ public class BinaryTree
             Root = new Node(value);
             return;
         }
+        else Check(Root, value);
         
         
     }
