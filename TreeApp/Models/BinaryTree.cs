@@ -2,12 +2,36 @@ namespace models;
 
 public class BinaryTree
 {
-   public Node Root {get;}
-    void Insert(int value)
+   public BinaryTree(Node root){
+    Root = root;
+   }
+   public BinaryTree(){
+    Root = null;
+   }
+   public Node ? Root {get; private set;}
+    public void Insert(int value)
     {
+        if (Root == null) {
+            Root = new Node(value);
+            return;
+        }
+        
         
     }
-    string InOrder(){}
+    private void Check(Node node, int value){
+        if (node.Value == value) return;
+        if (value < node.Value ){
+            if (node.Left == null) node.Left = new Node(value);
+            else Check(node.Left, value);
+        }
+        if (value > node.Value ){
+            if (node.Right == null) node.Right = new Node(value);
+            else Check(node.Right, value);
+        }
+    }
+    string InOrder(){
+        return "";
+    }
     public int Height()
     {
         return HeightFinder(Root);
@@ -34,7 +58,7 @@ public class BinaryTree
         {
             return $"graph TD;\n"+Root.Value+"\n";
         }
-        return $"graph TD;\n"+ToMermaid(Root, counter)+"\n";
+        return $"graph TD;\n"+ToMermaid(Root, ref counter)+"\n";
         
     }
     private string ToMermaid(Node? current, ref int counter)
@@ -46,13 +70,15 @@ public class BinaryTree
         string temp = string.Empty;
         if (current.Left != null)
         {
-            temp += node.Value+" --> "+node.Left.Value+" \n";
-            temp += ToMermaid(current.Left);
+            temp += current.Value+" --> "+current.Left.Value+" \n";
+            temp += ToMermaid(current.Left, ref counter);
         }
          if (current.Right != null)
         {
-            temp += node.Value+" --> "+node.Right.Value+" \n";
-            temp += ToMermaid(current.Right);
+            temp += current.Value+" --> "+current.Right.Value+" \n";
+            temp += ToMermaid(current.Right, ref counter);
         }
+        counter ++;
+        return temp;
     }
 }

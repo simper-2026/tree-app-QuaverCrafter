@@ -10,4 +10,10 @@ public class Node
         Left=left;
         Right=right;
     }
+    public Node(int val)
+    {
+        Value=val;
+        Left=null;
+        Right=null;
+    }
 }
