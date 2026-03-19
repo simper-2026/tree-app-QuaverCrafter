@@ -50,7 +50,6 @@ public class BinaryTree
     }
     public string ToMermaid()
     {
-        int counter = 0;
         if (Root== null)
         {
             return "graph TD; \n";
@@ -59,27 +58,44 @@ public class BinaryTree
         {
             return $"graph TD;\n"+Root.Value+"\n";
         }
-        return $"graph TD;\n"+ToMermaid(Root, ref counter)+"\n";
+        int counter = 0;
+      
+        return $"graph TD;\n"+ToMermaid(Root, ref counter )+"\n";
         
     }
     private string ToMermaid(Node? current, ref int counter)
     {
         if (current == null||(current.Left == null && current.Right ==null))
         {
+            
             return string.Empty;
+
         }
         string temp = string.Empty;
         if (current.Left != null)
         {
-            temp += current.Value+" --> "+current.Left.Value+" \n";
+            temp += $"{current.Value} --> {current.Left.Value}[ {current.Left.Value} #{counter} ] \n";
+            counter ++;
             temp += ToMermaid(current.Left, ref counter);
         }
-         if (current.Right != null)
+        else {
+            temp += $"{current.Value} -->  _ph{current.Value}[ ] \n linkStyle {counter} stroke:none,stroke-width:0,fill:none \n style _ph{current.Value} fill:none,stroke:none,color:none \n"; 
+            counter ++;
+               
+        }
+        if (current.Right != null)
         {
-            temp += current.Value+" --> "+current.Right.Value+" \n";
+        
+            temp += $"{current.Value} --> {current.Right.Value}[ {current.Right.Value} #{counter} ] \n";
+            counter ++;
             temp += ToMermaid(current.Right, ref counter);
         }
-        counter ++;
+        else {
+            temp += current.Value+" -->  _ph"+current.Value+"[ ] \n linkStyle "+counter+" stroke:none,stroke-width:0,fill:none \n style _ph"+current.Value+" fill:none,stroke:none,color:none \n";  
+            counter ++;
+            
+        }
+        
         return temp;
     }
 }
