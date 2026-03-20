@@ -26,14 +26,14 @@ public class BinaryTree
                 node.Left = new Node(value, node);
                 RotateCheck(node);
                 }
-            else Check(node.Left);
+            else Check(node.Left, value);
         }
         if (value > node.Value ){
             if (node.Right == null) {
                 node.Right = new Node(value, node);
                 RotateCheck(node);
             }
-            else Check(node.Right);
+            else Check(node.Right, value);
         }
     }
     private void RotateCheck(Node node ){
@@ -55,8 +55,8 @@ public class BinaryTree
     z.Parent= y;
     if (t3!= null) t3.Parent=z;
     y.Parent = parent;
-    if (y.Parent = null) Root = y;
-    else if (y.Parent.Left = z) y.Parent.Left =y;
+    if (y.Parent == null) Root = y;
+    else if (y.Parent.Left == z) y.Parent.Left =y;
     else y.Parent.Right = y;
     return y;                // y is the new root of this subtree
 }
@@ -69,8 +69,8 @@ Node RotateLeft(Node z)
     z.Right = t2;
     if (t2!= null) t2.Parent=z;
     y.Parent = parent;
-    if (y.Parent = null) Root = y;
-    else if (y.Parent.Right = z) y.Parent.Right =y;
+    if (y.Parent == null) Root = y;
+    else if (y.Parent.Right == z) y.Parent.Right =y;
     else y.Parent.Left = y;
     return y;
 }
