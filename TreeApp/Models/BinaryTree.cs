@@ -22,14 +22,58 @@ public class BinaryTree
     private void Check(Node node, int value){
         if (node.Value == value) return;
         if (value < node.Value ){
-            if (node.Left == null) node.Left = new Node(value);
-            else Check(node.Left, value);
+            if (node.Left == null) {
+                node.Left = new Node(value, node);
+                RotateCheck(node);
+                }
+            else Check(node.Left);
         }
         if (value > node.Value ){
-            if (node.Right == null) node.Right = new Node(value);
-            else Check(node.Right, value);
+            if (node.Right == null) {
+                node.Right = new Node(value, node);
+                RotateCheck(node);
+            }
+            else Check(node.Right);
         }
     }
+    private void RotateCheck(Node node ){
+        int diff = HeightFinder(node.Left) - HeightFinder(node.Right);
+        if (diff>1) node = RotateRight(node);
+        if (diff<-1) node = RotateLeft(node);
+        
+        if (node.Parent != null) RotateCheck(node.Parent);
+        
+
+    }
+      Node RotateRight(Node z)
+{
+    Node parent = z.Parent;
+    Node y  = z.Left;
+    Node t3 = y.Right;   // T3 moves from y's right to z's left
+    y.Right = z;
+    z.Left  = t3;
+    z.Parent= y;
+    if (t3!= null) t3.Parent=z;
+    y.Parent = parent;
+    if (y.Parent = null) Root = y;
+    else if (y.Parent.Left = z) y.Parent.Left =y;
+    else y.Parent.Right = y;
+    return y;                // y is the new root of this subtree
+}
+Node RotateLeft(Node z)
+{
+    Node parent = z.Parent;
+    Node y  = z.Right;
+    Node t2 = y.Left;
+    y.Left  = z;
+    z.Right = t2;
+    if (t2!= null) t2.Parent=z;
+    y.Parent = parent;
+    if (y.Parent = null) Root = y;
+    else if (y.Parent.Right = z) y.Parent.Right =y;
+    else y.Parent.Left = y;
+    return y;
+}
     string InOrder(){
         return "";
     }
@@ -56,7 +100,7 @@ public class BinaryTree
         }
         if (Root.Right == null && Root.Left == null)
         {
-            return $"graph TD;\n"+Root.Value+"\n";
+            return $"graph TD;\n{Root.Value}\n";
         }
         int counter = 0;
       
@@ -74,7 +118,7 @@ public class BinaryTree
         string temp = string.Empty;
         if (current.Left != null)
         {
-            temp += $"{current.Value} --> {current.Left.Value}[ {current.Left.Value} #{counter} ] \n";
+            temp += $"{current.Value} --> {current.Left.Value}[ {current.Left.Value} h:{HeightFinder(current.Left)} ] \n";
             counter ++;
             temp += ToMermaid(current.Left, ref counter);
         }
@@ -86,7 +130,7 @@ public class BinaryTree
         if (current.Right != null)
         {
         
-            temp += $"{current.Value} --> {current.Right.Value}[ {current.Right.Value} #{counter} ] \n";
+            temp += $"{current.Value} --> {current.Right.Value}[ {current.Right.Value} h:{HeightFinder(current.Right)} ] \n";
             counter ++;
             temp += ToMermaid(current.Right, ref counter);
         }
@@ -98,4 +142,5 @@ public class BinaryTree
         
         return temp;
     }
+  
 }
